@@ -16,9 +16,9 @@
                 },
                 {
                     "name": "Camera",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "39423f12-ebdd-4a42-9422-761d34712b26",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -42,7 +42,7 @@
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KB & Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -53,7 +53,7 @@
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KB & Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -64,7 +64,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KB & Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -75,79 +75,52 @@
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KB & Mouse",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad R Stick",
-                    "id": "2d2df861-fcb7-4002-8f9b-ab7d85890988",
-                    "path": "OneModifier",
+                    "name": "",
+                    "id": "0f5ab55f-33ee-4e8a-9aef-e507c1b94c56",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "",
-                    "groups": "",
+                    "processors": "NormalizeVector2",
+                    "groups": "KB & Mouse",
                     "action": "Camera",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "modifier",
-                    "id": "66885743-fc02-4f6c-86aa-191334f85fee",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "6918e715-4e8f-4e16-a509-82ee2f2cecb0",
+                    "name": "",
+                    "id": "0ed7b75d-566c-47a9-ac18-ae740f6e3224",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "StickDeadzone",
                     "groups": "",
                     "action": "Camera",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Mouse",
-                    "id": "1cd587f0-44cc-429d-b781-a6bd0d4aa7e4",
-                    "path": "OneModifier",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Camera",
-                    "isComposite": true,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "modifier",
-                    "id": "ae71b04f-5fcd-42a6-ab87-e3198fa1aa12",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "binding",
-                    "id": "3fe7f746-7a47-48d7-bc75-8fc24be120f6",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "NormalizeVector2",
-                    "groups": "",
-                    "action": "Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 }
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "KB & Mouse",
+            "bindingGroup": "KB & Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }

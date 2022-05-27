@@ -20,6 +20,8 @@ namespace agahan_vivas
         public new Rigidbody rigidbody;
         public GameObject normalCam;
 
+        public CharacterController characterController;
+
         [Header("Stats")] //adds custom section in the unity inspector (the right-hand window)
         [SerializeField]  //to customize these fields from unity itself
         float movementSpeed = 5;
@@ -39,6 +41,8 @@ namespace agahan_vivas
 
             cameraObject = Camera.main.transform;//set cameraObject to the the Main camera
                                                  //(which is also the Player's camera in this case)
+            
+            characterController = GetComponent<CharacterController>();
 
             animHandler.Initialize();
         }
@@ -53,6 +57,7 @@ namespace agahan_vivas
             //camera-relative direction * inputted direction value (this will be negative if opposite direction wanted)
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
+            moveDirection.y = 0;
 
             //makes sure net movement value before movement speed
             //is always 1 (allows for more consistent speed in all directions)

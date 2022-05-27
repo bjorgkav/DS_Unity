@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace agahan_vivas
 {
     public class InputHandler : MonoBehaviour
     {
+        #region Variables
         public float horizontal;
         public float vertical;
         public float moveAmount;
@@ -13,9 +15,36 @@ namespace agahan_vivas
         public float mouseY;
 
         PlayerControls inputActions;
+        CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
+        #endregion
+
+        private void Awake()
+        {
+            Debug.Log("loading cameraHandler.");
+            cameraHandler = CameraHandler.singleton;
+            if (cameraHandler != null)
+            {
+                Debug.Log("success!");
+            }
+        }
+        
+        private void FixedUpdate()
+        {
+            float delta = Time.deltaTime;
+
+            if (cameraHandler != null)
+            {
+                cameraHandler.FollowTarget(delta);
+                cameraHandler.HandleCamRotation(delta, mouseX, mouseY);
+            }
+            else
+            {
+                Debug.Log("cameraHandler is null!");
+            }
+        }
 
         public void OnEnable() 
         {
@@ -47,13 +76,23 @@ namespace agahan_vivas
                 #endregion
 
                 //read the movement value when WASD keys are pressed, then set movementInput to that
-                inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
+                inputActions.PlayerMovement.Movement.performed += onMove;
                 //read the movement value when mouse is moved, then set cameraInput to that
-                inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+                inputActions.PlayerMovement.Camera.performed += onMouseMove;
                 #endregion
             }
 
             inputActions.Enable();
+        }
+
+        public void onMove(InputAction.CallbackContext context)
+        {
+            movementInput = context.ReadValue<Vector2>();
+        }
+
+        public void onMouseMove(InputAction.CallbackContext context)
+        {
+            cameraInput = context.ReadValue<Vector2>();
         }
 
         private void OnDisable()
