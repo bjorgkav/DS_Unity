@@ -87,7 +87,7 @@ namespace agahan_vivas
             horizontal = movementInput.x;
             vertical = movementInput.y;
 
-            //clamp values between 0 and 1 for normalization purposes
+            //clamp values between 0 and 1 for normalization (and animation) purposes
             //Clamp01 means all values are "clamped" to a min of 0f and max of 1f (f's are units of force in unity)
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
 

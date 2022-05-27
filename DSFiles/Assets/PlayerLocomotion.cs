@@ -14,6 +14,8 @@ namespace agahan_vivas
         [HideInInspector]
         public Transform myTransform; // prevent this transform object from showing up in the unity menus
                                       // to lessen clutter while allowing public access across classes
+        [HideInInspector]
+        public AnimatorHandler animHandler;
 
         public new Rigidbody rigidbody;
         public GameObject normalCam;
@@ -30,11 +32,15 @@ namespace agahan_vivas
 
             inputHandler = GetComponent<InputHandler>();
 
+            animHandler = GetComponentInChildren<AnimatorHandler>(); //in children because animatorhandler will be under player model
+
             myTransform = transform; //set myTransform to the current gameobject (likely player model)'s Transform
                                      //property (position, rotation, scale).
 
             cameraObject = Camera.main.transform;//set cameraObject to the the Main camera
                                                  //(which is also the Player's camera in this case)
+
+            animHandler.Initialize();
         }
 
         public void Update()
@@ -62,7 +68,12 @@ namespace agahan_vivas
             rigidbody.velocity = projectedVelocity;
 
             //call HandleRotation to make the character face the way they're walking
-            HandleRotation(delta);
+            if(animHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+
+            animHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
         }
 
         #region Movement (expand this)

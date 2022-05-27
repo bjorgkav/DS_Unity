@@ -6,14 +6,14 @@ namespace agahan_vivas
 {
     public class AnimatorHandler : MonoBehaviour
     {
-        public Animator anim;
+        public Animator animator;
         int vertical;
         int horizontal;
         public bool canRotate;
         
         public void Initialize() 
-        { 
-            anim = GetComponent<Animator>();
+        {
+            animator = GetComponent<Animator>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
@@ -24,13 +24,13 @@ namespace agahan_vivas
             float v = 0;
 
             //clamping the values
-            if (vertMovement < 0 && vertMovement < 0.55f) 
+            if (vertMovement > 0 && vertMovement <= 0.55f) 
             {
                 v = 0.5f;
             } else if (vertMovement > 0.55f)
             {
                 v = 1;
-            } else if (vertMovement < 0 && vertMovement > -0.55f)
+            } else if (vertMovement < 0 && vertMovement >= -0.55f)
             {
                 v = -0.5f;
             } else if (vertMovement < -0.55f)
@@ -41,11 +41,14 @@ namespace agahan_vivas
                 v = 0;
             }
             #endregion
+            animator.SetFloat("Vertical", v, 0.1f, Time.deltaTime);
+            //Debug.Log("Trying to set Vertical (" + vertical + ") to " + v);
+            //Debug.Log("Actual Vertical value: " + animator.GetFloat(vertical));
 
             #region Horizontal
             float h = 0;
 
-            if (horizonMovement < 0 && horizonMovement < 0.55f)
+            if (horizonMovement > 0 && horizonMovement <= 0.55f)
             {
                 h = 0.5f;
             }
@@ -53,7 +56,7 @@ namespace agahan_vivas
             {
                 h = 1;
             }
-            else if (horizonMovement < 0 && horizonMovement > -0.55f)
+            else if (horizonMovement < 0 && horizonMovement >= -0.55f)
             {
                 h = -0.5f;
             }
@@ -66,9 +69,19 @@ namespace agahan_vivas
                 h = 0;
             }
             #endregion
+            animator.SetFloat("Horizontal", h, 0.1f, Time.deltaTime);
+            //Debug.Log("Trying to set Horizontal (" + vertical + ") to " + v);
+            //Debug.Log("Actual Vertical value: " + animator.GetFloat(horizontal));
+        }
 
-            anim.SetFloat("Vertical", v, 0.1f, Time.deltaTime);
-            anim.SetFloat("Horizontal", h, 0.1f, Time.deltaTime);
+        public void CanRotate()
+        {
+            canRotate = true; //this will be set in the unity menu
+        }
+
+        public void StopRotate()
+        {
+            canRotate = false;
         }
     }
 }
