@@ -14,6 +14,10 @@ namespace agahan_vivas
         public float mouseX;
         public float mouseY;
 
+        public bool b_Input;
+        public bool rollFlag;
+
+
         PlayerControls inputActions;
         CameraHandler cameraHandler;
 
@@ -110,8 +114,8 @@ namespace agahan_vivas
         /// <param name="delta">Time delta.</param>
         public void TickInput(float delta)
         {
-            
             moveInput(delta);
+            HandleRollInput(delta);
         }
 
         /// <summary>
@@ -135,6 +139,15 @@ namespace agahan_vivas
             mouseY = cameraInput.y;
         }
 
+        private void HandleRollInput (float delta)
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            
+            if (b_Input)
+            {
+                rollFlag = true;
+            }
+        }
     }
 }
 

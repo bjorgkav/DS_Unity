@@ -53,32 +53,9 @@ namespace agahan_vivas
 
             //call input processing methods
             inputHandler.TickInput(delta);
+            HandleMovement(delta);
+            HandleRollingAndSprinting(delta);
 
-            //camera-relative direction * inputted direction value (this will be negative if opposite direction wanted)
-            moveDirection = cameraObject.forward * inputHandler.vertical;
-            moveDirection += cameraObject.right * inputHandler.horizontal;
-            moveDirection.y = 0;
-
-            //makes sure net movement value before movement speed
-            //is always 1 (allows for more consistent speed in all directions)
-            moveDirection.Normalize();
-
-            //apply speed multiplier
-            float speed = movementSpeed;
-            moveDirection *= speed;
-
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-
-            //after calculating the movement vectors, set that to be the rigidbody (character)'s velocity to start movement.
-            rigidbody.velocity = projectedVelocity;
-
-            //call HandleRotation to make the character face the way they're walking
-            if(animHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
-
-            animHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
         }
 
         #region Movement (expand this)
@@ -123,6 +100,63 @@ namespace agahan_vivas
             myTransform.rotation = targetRotation;
 
         }
+
+        public void HandleMovement (float delta)
+        {
+            //camera-relative direction * inputted direction value (this will be negative if opposite direction wanted)
+            moveDirection = cameraObject.forward * inputHandler.vertical;
+            moveDirection += cameraObject.right * inputHandler.horizontal;
+            moveDirection.y = 0;
+
+            //makes sure net movement value before movement speed
+            //is always 1 (allows for more consistent speed in all directions)
+            moveDirection.Normalize();
+
+            //apply speed multiplier
+            float speed = movementSpeed;
+            moveDirection *= speed;
+
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+
+            //after calculating the movement vectors, set that to be the rigidbody (character)'s velocity to start movement.
+            rigidbody.velocity = projectedVelocity;
+
+            //call HandleRotation to make the character face the way they're walking
+            if(animHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+
+            animHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+        }
+
+        public void HandleRollingAndSprinting (float delta)
+        {
+            if (animHandler.animator.GetBool("isInteracting"))
+            {
+                return;
+            }
+
+            if (inputHandler.rollFlag)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+
+                if (inputHandler.moveAmount > 0)
+                {
+                    animHandler.PlayTargetAnimation("Roll", true);
+                    moveDirection.y = 0;
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+
+                else
+                {
+                    animHandler.PlayTargetAnimation("Backstep", true);
+                }
+            }
+        }
+
         #endregion
 
     }
