@@ -13,6 +13,7 @@ namespace agahan_vivas
         private Transform myTransform; //for transforming the gameobjects' transforms
         private Vector3 cameraTransformPosition;
         private LayerMask ignoreLayers;
+        private Vector3 cameraFollowVelocity = Vector3.zero;
 
         public static CameraHandler singleton;
 
@@ -20,11 +21,16 @@ namespace agahan_vivas
         public float followSpeed = 0.1f;
         public float pivotSpeed = 0.03f;
 
+        private float targetPosition;
         private float defaultPosition;
         private float lookAngle;
         private float pivotAngle;
         public float minPivot = -35;
         public float maxPivot = 35;
+
+        public float cameraSphereRadius = 0.2f;
+        public float cameraCollisionOffset = 0.2f;
+        public float minCollisionOffset = 0.2f;
         #endregion
 
         private void Awake()
@@ -43,7 +49,8 @@ namespace agahan_vivas
         public void FollowTarget (float delta)
         {
             //make targetPosition = the vector that allows myTransform to move to targetTransform at a rate of delta/followspeed
-            Vector3 targetPosition = Vector3.Lerp(myTransform.position, targetTransform.position, delta / followSpeed);
+            Vector3 targetPosition = Vector3.SmoothDamp
+                (myTransform.position, targetTransform.position, ref cameraFollowVelocity, delta / followSpeed);
 
             //move myTransform using targetPosition
             //(this will be called on update, so this will let the camera follow the player)
@@ -89,6 +96,38 @@ namespace agahan_vivas
 
         }
 
+        public void HandleCameraCollisions (float delta)
+        {
+            targetPosition = defaultPosition;
+            RaycastHit hit;
+            Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+            direction.Normalize();
+
+
+            //parameters for SphereCast are:
+            //Vector3 origin,
+            //float radius,
+            //Vector3 direction,
+            //out RaycastHit hitInfo,
+            //float maxDistance,
+            //int layerMask
+
+            //makes a sphere around camera that returns true if it hits a collider
+            if (Physics.SphereCast(cameraPivotTransform.position, 
+                cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), ignoreLayers))
+            {
+                float distance = Vector3.Distance(cameraPivotTransform.position, hit.point);
+                targetPosition = -(distance - cameraCollisionOffset);
+            }
+
+            if (Mathf.Abs(targetPosition) < minCollisionOffset)
+            {
+                targetPosition = -minCollisionOffset;
+            }
+
+            cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
+            cameraTransform.localPosition = cameraTransformPosition;
+        }
     }
 }
 
