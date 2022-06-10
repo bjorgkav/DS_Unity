@@ -7,6 +7,8 @@ namespace agahan_vivas
     public class AnimatorHandler : MonoBehaviour
     {
         public Animator animator;
+        public InputHandler inputHandler;
+        public PlayerLocomotion playerLocomotion;
         int vertical;
         int horizontal;
         public bool canRotate;
@@ -16,6 +18,8 @@ namespace agahan_vivas
             animator = GetComponent<Animator>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
+            inputHandler = GetComponentInParent<InputHandler>();
+            playerLocomotion = GetComponentInParent<PlayerLocomotion>();
         }
 
         public void UpdateAnimatorValues(float vertMovement, float horizonMovement)
@@ -76,7 +80,12 @@ namespace agahan_vivas
 
         public void PlayTargetAnimation(string targetAnim, bool isInteracting)
         {
+            //isInteracting = True if the player is playing an animation that, by design, cannot be cancelled by rolling
             animator.applyRootMotion = isInteracting;
+            if (animator.applyRootMotion)
+            {
+                Debug.Log("rootmotion is " + animator.applyRootMotion);
+            }
             animator.SetBool("isInteracting", isInteracting);
             animator.CrossFade(targetAnim, 0.2f);
         }
@@ -90,5 +99,22 @@ namespace agahan_vivas
         {
             canRotate = false;
         }
+
+        private void OnAnimatorMove()//when animator moves something
+        {
+            if (inputHandler.isInteracting == false)
+            {
+                return;
+            }
+
+            float delta = Time.deltaTime;
+            //playerLocomotion.rigidbody.drag = 0;
+            Vector3 deltaPos = animator.deltaPosition;
+            deltaPos.y = 0;
+
+            Vector3 velocity = deltaPos / delta;
+            playerLocomotion.rigidbody.velocity = velocity;
+        }
+
     }
 }

@@ -175,6 +175,9 @@ MonoBehaviour:
   pivotSpeed: 0.1
   minPivot: -35
   maxPivot: 35
+  cameraSphereRadius: 0.2
+  cameraCollisionOffset: 0.2
+  minCollisionOffset: 0.2
 --- !u!1 &339528902
 GameObject:
   m_ObjectHideFlags: 0
@@ -647,7 +650,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -1091,7 +1094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTransform: {fileID: 0}
   animHandler: {fileID: 0}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 1001111979}
   normalCam: {fileID: 0}
   characterController: {fileID: 0}
   movementSpeed: 5
@@ -1113,6 +1116,9 @@ MonoBehaviour:
   moveAmount: 0
   mouseX: 0
   mouseY: 0
+  b_Input: 0
+  rollFlag: 0
+  isInteracting: 0
 --- !u!114 &1001111982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1126,6 +1132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  inputHandler: {fileID: 0}
+  playerLocomotion: {fileID: 0}
   canRotate: 1
 --- !u!95 &1001111983
 Animator:
@@ -1377,7 +1385,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1803446457
 GameObject:

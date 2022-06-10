@@ -6,7 +6,7 @@ namespace agahan_vivas
 {
     public class PlayerLocomotion : MonoBehaviour
     {
-        //initializing
+        #region initializing
         Transform cameraObject;
         InputHandler inputHandler;
         Vector3 moveDirection;
@@ -27,6 +27,7 @@ namespace agahan_vivas
         float movementSpeed = 5;
         [SerializeField]
         float rotationSpeed = 10;
+        #endregion
 
         void Start()
         {
@@ -132,7 +133,11 @@ namespace agahan_vivas
 
         public void HandleRollingAndSprinting (float delta)
         {
-            if (animHandler.animator.GetBool("isInteracting"))
+            //Debug.Log("isInteracting = " + animHandler.animator.GetBool("isInteracting"));
+            //if you're interacting with an object, prevent rolling
+            //reset after roll animation is done
+            //(check resetisinteracting behavior script in Roll state)
+            if (animHandler.animator.GetBool("isInteracting")) 
             {
                 return;
             }

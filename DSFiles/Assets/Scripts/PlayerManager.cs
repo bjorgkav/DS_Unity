@@ -6,16 +6,18 @@ namespace agahan_vivas
 {
     public class PlayerManager : MonoBehaviour
     {
-        // Start is called before the first frame update
+        InputHandler inputHandler;
+        Animator anim;
+
         void Start()
         {
-            
+            inputHandler = GetComponent<InputHandler>();    
+            anim = GetComponentInChildren<Animator>();
         }
 
-        // Update is called once per frame
         void Update()
         {
-            
+            inputHandler.isInteracting = anim.GetBool("isInteracting");
         }
     }
 }

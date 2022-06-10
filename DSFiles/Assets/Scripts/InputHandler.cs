@@ -16,6 +16,8 @@ namespace agahan_vivas
 
         public bool b_Input;
         public bool rollFlag;
+        public bool isInteracting; //is reset after roll animation is done
+                                   //(check resetisinteracting behavior script in Roll state)
 
 
         PlayerControls inputActions;
@@ -141,12 +143,17 @@ namespace agahan_vivas
 
         private void HandleRollInput (float delta)
         {
-            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            //check if roll has been pressed
             
+            b_Input = (inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed);
             if (b_Input)
             {
                 rollFlag = true;
             }
+            else { 
+                rollFlag = false;
+            }
+            //Debug.Log("Roll.phase = " + inputActions.PlayerActions.Roll.phase + "\nb_input = " + b_Input + "\nrollFlag = " + rollFlag);
         }
     }
 }
