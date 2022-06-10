@@ -84,7 +84,7 @@ namespace agahan_vivas
             animator.applyRootMotion = isInteracting;
             if (animator.applyRootMotion)
             {
-                Debug.Log("rootmotion is " + animator.applyRootMotion);
+                //Debug.Log("rootmotion is " + animator.applyRootMotion);
             }
             animator.SetBool("isInteracting", isInteracting);
             animator.CrossFade(targetAnim, 0.2f);
@@ -98,22 +98,6 @@ namespace agahan_vivas
         public void StopRotate()
         {
             canRotate = false;
-        }
-
-        private void OnAnimatorMove()//when animator moves something
-        {
-            if (inputHandler.isInteracting == false)
-            {
-                return;
-            }
-
-            float delta = Time.deltaTime;
-            //playerLocomotion.rigidbody.drag = 0;
-            Vector3 deltaPos = animator.deltaPosition;
-            deltaPos.y = 0;
-
-            Vector3 velocity = deltaPos / delta;
-            playerLocomotion.rigidbody.velocity = velocity;
         }
 
     }

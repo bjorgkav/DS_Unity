@@ -18,6 +18,7 @@ namespace agahan_vivas
         void Update()
         {
             inputHandler.isInteracting = anim.GetBool("isInteracting");
+            inputHandler.rollFlag = false;
         }
     }
 }

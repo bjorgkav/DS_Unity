@@ -18,6 +18,7 @@ public class ResetisInteracting : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("isInteracting", false); 
+        animator.applyRootMotion = false;
     }
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
