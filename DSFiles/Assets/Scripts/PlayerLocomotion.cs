@@ -17,6 +17,9 @@ namespace agahan_vivas
         [HideInInspector]
         public AnimatorHandler animHandler;
 
+        [HideInInspector]
+        public Animator animator;
+
         public new Rigidbody rigidbody;
         public GameObject normalCam;
 
@@ -27,6 +30,11 @@ namespace agahan_vivas
         float movementSpeed = 5;
         [SerializeField]
         float rotationSpeed = 10;
+        [SerializeField]
+        float sprintSpeed = 8;
+
+        public bool isSprinting;
+
         #endregion
 
         void Start()
@@ -46,12 +54,14 @@ namespace agahan_vivas
             characterController = GetComponent<CharacterController>();
 
             animHandler.Initialize();
+
+            animator = GetComponentInChildren<Animator>();
         }
 
         public void Update()
         {
+            isSprinting = inputHandler.b_Input;
             float delta = Time.deltaTime;
-
             //call input processing methods
             inputHandler.TickInput(delta);
             HandleMovement(delta);
@@ -104,6 +114,13 @@ namespace agahan_vivas
 
         public void HandleMovement (float delta)
         {
+            //you shouldn't be able to move character while rolling
+            if (animator.GetBool("isInteracting"))
+            {
+                //Debug.Log("i'm rolling right now! can't change direction.");
+                return;
+            }
+
             //camera-relative direction * inputted direction value (this will be negative if opposite direction wanted)
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
@@ -115,7 +132,17 @@ namespace agahan_vivas
 
             //apply speed multiplier
             float speed = movementSpeed;
-            moveDirection *= speed;
+
+            if (inputHandler.sprintFlag)
+            {
+                speed = sprintSpeed;
+                isSprinting = true;
+                moveDirection *= speed;
+            }
+            else
+            {
+                moveDirection *= speed;
+            }
 
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
@@ -128,7 +155,7 @@ namespace agahan_vivas
                 HandleRotation(delta);
             }
 
-            animHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
         }
 
         public void HandleRollingAndSprinting (float delta)
@@ -154,7 +181,6 @@ namespace agahan_vivas
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
                 }
-
                 else
                 {
                     animHandler.PlayTargetAnimation("Backstep", true);

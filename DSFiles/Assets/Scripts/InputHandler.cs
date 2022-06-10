@@ -18,6 +18,8 @@ namespace agahan_vivas
         public bool rollFlag;
         public bool isInteracting; //is reset after roll animation is done
                                    //(check resetisinteracting behavior script in Roll state)
+        public float rollInputTimer;
+        public bool sprintFlag;
 
 
         PlayerControls inputActions;
@@ -143,15 +145,21 @@ namespace agahan_vivas
 
         private void HandleRollInput (float delta)
         {
-            //check if roll has been pressed
-            
+            //check if roll has been
             b_Input = (inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed);
-            if (b_Input)
+            if (b_Input) //if roll button is pressed
             {
-                rollFlag = true;
+                rollInputTimer += delta; //count time button is pressed
+                sprintFlag = true; //sprint while button is held
             }
-            else { 
-                rollFlag = false;
+            else {
+                //sprintFlag = false;
+                if (rollInputTimer > 0 && rollInputTimer < 0.5f) //check to see if player simply stopped sprinting or wanted to roll
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+                rollInputTimer = 0;
             }
             //Debug.Log("Roll.phase = " + inputActions.PlayerActions.Roll.phase + "\nb_input = " + b_Input + "\nrollFlag = " + rollFlag);
         }

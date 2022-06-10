@@ -22,10 +22,11 @@ namespace agahan_vivas
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
         }
 
-        public void UpdateAnimatorValues(float vertMovement, float horizonMovement)
+        public void UpdateAnimatorValues(float vertMovement, float horizonMovement, bool isSprinting)
         {
-            #region Vertical
             float v = 0;
+            float h = 0;
+            #region Vertical
 
             //clamping the values
             if (vertMovement > 0 && vertMovement <= 0.55f) 
@@ -45,12 +46,18 @@ namespace agahan_vivas
                 v = 0;
             }
             #endregion
+
+            if (isSprinting && inputHandler.moveAmount > 0)
+            {
+                v = 2;
+                h = horizonMovement;
+            }
+
             animator.SetFloat("Vertical", v, 0.1f, Time.deltaTime);
             //Debug.Log("Trying to set Vertical (" + vertical + ") to " + v);
             //Debug.Log("Actual Vertical value: " + animator.GetFloat(vertical));
 
             #region Horizontal
-            float h = 0;
 
             if (horizonMovement > 0 && horizonMovement <= 0.55f)
             {
