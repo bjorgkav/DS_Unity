@@ -107,5 +107,15 @@ namespace agahan_vivas
             canRotate = false;
         }
 
+        public void EnableIsInvulnerable()
+        {
+            animator.SetBool("isInvulnerable", true);
+        }
+
+        public void DisableIsInvulnerable()
+        {
+            animator.SetBool("isInvulnerable", false);
+        }
+
     }
 }

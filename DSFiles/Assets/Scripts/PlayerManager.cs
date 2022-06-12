@@ -9,6 +9,8 @@ namespace agahan_vivas
         InputHandler inputHandler;
         Animator anim;
 
+        public bool isInvulnerable;
+
         void Start()
         {
             inputHandler = GetComponent<InputHandler>();    
@@ -20,6 +22,8 @@ namespace agahan_vivas
             inputHandler.isInteracting = anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
+            
+            isInvulnerable = anim.GetBool("isInvulnerable");
         }
     }
 }
