@@ -9,6 +9,7 @@ namespace agahan_vivas
         public Animator animator;
         public InputHandler inputHandler;
         public PlayerLocomotion playerLocomotion;
+        public CapsuleCollider capsule;
         int vertical;
         int horizontal;
         public bool canRotate;
@@ -20,6 +21,7 @@ namespace agahan_vivas
             horizontal = Animator.StringToHash("Horizontal");
             inputHandler = GetComponentInParent<InputHandler>();
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+            capsule = GetComponentInParent<CapsuleCollider>();
         }
 
         public void UpdateAnimatorValues(float vertMovement, float horizonMovement, bool isSprinting)
@@ -94,6 +96,7 @@ namespace agahan_vivas
                 //Debug.Log("rootmotion is " + animator.applyRootMotion);
             }
             animator.SetBool("isInteracting", isInteracting);
+            EnableIsInvulnerable();
             animator.CrossFade(targetAnim, 0.2f);
         }
 

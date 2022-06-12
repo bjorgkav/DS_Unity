@@ -22,7 +22,8 @@ namespace agahan_vivas
             inputHandler.isInteracting = anim.GetBool("isInteracting");
             inputHandler.rollFlag = false;
             inputHandler.sprintFlag = false;
-            
+
+            //i don't know if this actually does anything aside from showing na invulnerable yung character at the current frame
             isInvulnerable = anim.GetBool("isInvulnerable");
         }
     }

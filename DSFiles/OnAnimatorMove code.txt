@@ -1,0 +1,17 @@
+        private void OnAnimatorMove()//when animator moves something
+        {
+            if (inputHandler.isInteracting == false)
+            {
+                return;
+            }
+
+            Debug.Log("Animator should be moving");
+            float delta = Time.deltaTime;
+            playerLocomotion.rigidbody.drag = 0;
+            Vector3 deltaPos = animator.deltaPosition;
+            Debug.Log("root motion = " + deltaPos);
+            deltaPos.y = 0;
+
+            Vector3 velocity = deltaPos / delta;
+            playerLocomotion.rigidbody.velocity = velocity;
+        }

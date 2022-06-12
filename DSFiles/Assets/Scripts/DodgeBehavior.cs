@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResetisInteracting : StateMachineBehaviour
+public class DodgeBehavior : StateMachineBehaviour
 {
     public SphereCollider SphereCollider;
 

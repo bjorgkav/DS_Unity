@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResetisInteracting : StateMachineBehaviour
+public class RollBehavior : StateMachineBehaviour
 {
     public SphereCollider SphereCollider;
 
@@ -11,6 +11,7 @@ public class ResetisInteracting : StateMachineBehaviour
     {
         //animator.SetBool("isInteracting", true);
         //animator.SetBool("isInvulnerable", true);
+        animator.GetComponentInParent<CapsuleCollider>().enabled = false;
     }
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -23,6 +24,7 @@ public class ResetisInteracting : StateMachineBehaviour
         animator.SetBool("isInteracting", false);
         animator.SetBool("isInvulnerable", false);
         animator.applyRootMotion = false;
+        animator.GetComponentInParent<CapsuleCollider>().enabled = true;
         
     }
 
